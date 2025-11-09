@@ -4,17 +4,15 @@ const { Telegraf } = require('telegraf');
 // --- PENTING: LOGIKA DEKODE BASE64 ---
 if (!admin.apps.length) {
     try {
-        // Ambil Base64 string dari variabel baru
-        const serviceAccountBase64 = process.env.FIREBASE_KEY_CLEAN; // <--- Nama variabel baru
-        if (!serviceAccountBase64) {
+        // Menggunakan variabel FIREBASE_KEY_CLEAN
+        const serviceAccountJson = process.env.FIREBASE_KEY_CLEAN; 
+
+        if (!serviceAccountJson) {
             throw new Error('FIREBASE_KEY_CLEAN is not set.');
         }
         
-        // Dekode BASE64 kembali ke string JSON
-        const serviceAccountJson = Buffer.from(serviceAccountBase64, 'base64').toString('utf8');
-        
-        // Parse JSON
-        const serviceAccount = JSON.parse(serviceAccountJson);
+        // Cukup parse JSON yang sudah dijamin satu baris
+        const serviceAccount = JSON.parse(serviceAccountJson); 
 
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
