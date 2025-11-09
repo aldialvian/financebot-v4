@@ -1,0 +1,21 @@
+{
+  "name": "financebot-vercel",
+  "version": "1.0.0",
+  "description": "Telegram Finance Bot using Vercel and Firebase Firestore.",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node api/index.js"
+  },
+  "dependencies": {
+    "firebase-admin": "^11.5.0",
+    "telegraf": "^4.16.0"
+  },
+  "keywords": [
+    "telegram",
+    "bot",
+    "vercel",
+    "firebase"
+  ],
+  "author": "Aldi Alvian",
+  "license": "ISC"
+}
