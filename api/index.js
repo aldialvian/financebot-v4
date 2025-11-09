@@ -4,19 +4,17 @@ const { Telegraf } = require('telegraf');
 // --- PENTING: LOGIKA DEKODE BASE64 ---
 if (!admin.apps.length) {
     try {
-        const metadataJson = process.env.FIREBASE_METADATA; // Variabel baru 1
-        const privateKeyClean = process.env.FIREBASE_PRIVATE_KEY; // Variabel baru 2
-
-        if (!metadataJson || !privateKeyClean) {
-            throw new Error('FIREBASE variables not fully set (metadata or key missing).');
+        // Gunakan Base64 dari variabel baru
+        const serviceAccountBase64 = process.env.FIREBASE_SERVICE_KEY_FINAL; 
+        if (!serviceAccountBase64) {
+            throw new Error('FIREBASE_SERVICE_KEY_FINAL is not set.');
         }
         
-        // 1. Parse Metadata JSON (tanpa private_key)
-        let serviceAccount = JSON.parse(metadataJson);
-
-        // 2. Tambahkan private_key ke object yang sudah diparse
-        // Penting: Ganti '\\n' di Vercel dengan '\n' di sini (jika menggunakan JSON)
-        serviceAccount.private_key = privateKeyClean.replace(/\\n/g, '\n'); 
+        // Dekode BASE64 kembali ke string JSON
+        const serviceAccountJson = Buffer.from(serviceAccountBase64, 'base64').toString('utf8');
+        
+        // Parse JSON
+        const serviceAccount = JSON.parse(serviceAccountJson);
 
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount)
