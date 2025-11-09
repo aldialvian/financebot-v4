@@ -4,16 +4,16 @@ const { Telegraf } = require('telegraf');
 // --- PENTING: LOGIKA DEKODE BASE64 ---
 if (!admin.apps.length) {
     try {
-        // 1. Ambil Base64 string dari Environment Variable Vercel
-        const serviceAccountBase64 = process.env.FIREBASE_SERVICE_ACCOUNT_KEY;
+        // Ambil Base64 string dari variabel baru
+        const serviceAccountBase64 = process.env.FIREBASE_KEY_CLEAN; // <--- Nama variabel baru
         if (!serviceAccountBase64) {
-            throw new Error('FIREBASE_SERVICE_ACCOUNT_KEY is not set.');
+            throw new Error('FIREBASE_KEY_CLEAN is not set.');
         }
         
-        // 2. Dekode BASE64 kembali ke string JSON
+        // Dekode BASE64 kembali ke string JSON
         const serviceAccountJson = Buffer.from(serviceAccountBase64, 'base64').toString('utf8');
         
-        // 3. Parse JSON untuk inisialisasi
+        // Parse JSON
         const serviceAccount = JSON.parse(serviceAccountJson);
 
         admin.initializeApp({
@@ -23,7 +23,6 @@ if (!admin.apps.length) {
 
     } catch (error) {
         console.error("FIREBASE INITIALIZATION ERROR:", error.message);
-        // Error ini akan menyebabkan Vercel mengembalikan 401/500 jika gagal
     }
 }
 const db = admin.firestore();
